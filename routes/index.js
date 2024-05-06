@@ -4,25 +4,56 @@
 // creates the web page that's sent to the browser
 
 const express = require('express')
-const router = express.Router()
+const router = express.Router()  // figures out what code to run in response to a request
+// typically based on the URL, and the method,
 
-router.get('/', function(req, res) {
+// responds to get request to home page /
+router.get('/', function(req, res, next) {
     console.log(req.query)
-    const height = req.query.height
-    res.render('index.hbs')
+
+
+    res.render('index', { 
+        title: 'Body Mass Index',
+        author: 'Kirk',
+        timePageLoadedAt: new Date(),
+
+     })
+})    // get request to the home page
+
+
+router.get('/bmi-form', function(req, res, next) {
+    res.render('body_mass_index_form')
 })
 
-// add new routes, restart server
 
-router.get('/cat', function(req, res) {
-    res.send('Meow')
+router.post('/calculate', function(req, res, next) {
+    // access form data
+    // const formData = req.query  // for a GET request - read the URL query
+    const formData = req.body   // for a POST request
+    console.log(formData)
+
+    const height = formData.height
+    const weight = formData.weight
+    const bmi = weight / (height * height)  // bmi calculation
+
+    res.render('thank_you', { 
+        height: height,
+        weight: weight,
+        bmi: bmi.toFixed(2)
+    })
 })
 
-router.get('/tiger', function(req, res) {
-    res.send('Grrr')  // this could be replaced with
-    // code that generates a more complex web page
+// // add new routes, restart server
 
-})
+// router.get('/cat', function(req, res) {
+//     res.send('Meow')
+// })
+
+// router.get('/tiger', function(req, res) {
+//     res.send('Grrr')  // this could be replaced with
+//     // code that generates a more complex web page
+
+// })
 
 
 module.exports = router

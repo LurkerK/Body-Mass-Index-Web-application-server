@@ -15,13 +15,20 @@ const app = express()
 // enable parsing of POST request form body
 app.use(bodyParser.urlencoded({ extended: false }))
 
+
+const staticFileLocation = path.join(__dirname, 'public')
+app.use(express.static(staticFileLocation))
+
+
 // configure it to use the Handlebars template engine and 
 // work with template files in the views directory 
 app.set('views', path.join(__dirname, 'views'))
-// "views" are wb pages, hns is handlebars
-app.set('view engine', 'hbs')
+// "views" are wb pages, hbs is handlebars
+app.set('view engine', 'hbs')  // use handlebars to generate views
 
+app.use('/', indexRouter)  // all requests to the app will be passed to indexRouter
 
-app.use('/', indexRouter)
-
-let server = app.listen(3000)
+// start server running
+const server = app.listen(process.env.PORT || 3000, function() {
+    console.log('Server running on port', server.address().port)
+})
