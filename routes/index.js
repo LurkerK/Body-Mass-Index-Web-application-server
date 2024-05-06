@@ -9,6 +9,7 @@ const router = express.Router()  // figures out what code to run in response to 
 
 // responds to get request to home page /
 router.get('/', function(req, res, next) {
+    console.log(req.query)
 
     res.render('index', { 
         title: 'Body Mass Index',
